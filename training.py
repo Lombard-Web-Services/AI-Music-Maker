@@ -2,6 +2,8 @@
 # coding: utf-8
 
 """
+© 2026 Thibaut LOMBARD – Lombard Web Services. Tous droits réservés.
+
 Génération d'une musique ÉPIQUE MULTIPISTE avec structure fine — VERSION AUTO-ADAPTATIVE.
 
 Pipeline : MP3 → MIDI (Basic Pitch) → notes (music21) → LSTM → MIDI orchestral multipiste
