@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Music-Maker | Lombard Web Services</title>
+    <style>
+        :root {
+            --bg-dark: #0a0705;
+            --bg-panel: #14100c;
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #997a00;
+            --text-main: #e0d8c8;
+            --text-muted: #a39682;
+            --border-color: #3a2c1c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 50% 0%, #1f1810 0%, var(--bg-dark) 70%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gold);
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 12px;
+            border: 1px solid var(--gold-dark);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.1);
+            margin: 0 auto;
+            display: block;
+        }
+
+        h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: var(--gold-light);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
+            border-color: var(--gold-dark);
+        }
+
+        .feature-card h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .code-block {
+            background-color: #050403;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--gold-light);
+            font-size: 0.9rem;
+        }
+
+        .btn-download {
+            display: inline-block;
+            background: linear-gradient(180deg, var(--gold-dark), var(--gold));
+            color: var(--bg-dark);
+            font-weight: bold;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: 1px solid var(--gold-light);
+            margin: 2rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(180deg, var(--gold), var(--gold-light));
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+            transform: translateY(-2px);
+            color: #000;
+        }
+
+        .download-section {
+            text-align: center;
+            background-color: var(--bg-panel);
+            border: 1px solid var(--gold-dark);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .instruction-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .instruction-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .instruction-list li::before {
+            content: "•";
+            color: var(--gold);
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .alert {
+            background-color: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-text">AI-Music-Maker</div>
+            <div class="subtitle">by Lombard Web Services</div>
+            <img src="image.png" alt="AI-Music-Maker" class="hero-image">
+        </header>
+
+        <section>
+            <p>AI-Music-Maker est un moteur de génération musicale basé sur l'intelligence artificielle. Il utilise un modèle LSTM (Long Short-Term Memory) pour composer des morceaux orchestraux épiques à partir de vos propres fichiers audio (MP3) ou fichiers MIDI. Le système analyse les notes, apprend le style musical, puis génère une partition multipiste avec une structure dramatique avancée et une orchestration adaptative.</p>
+        </section>
+
+        <h2>Fonctionnalités</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h4>Transcription Audio vers MIDI</h4>
+                <p>Utilise Basic Pitch de Spotify pour extraire les notes de vos fichiers MP3.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Génération Multi-Pistes</h4>
+                <p>Crée des partitions pour plusieurs instruments simultanément.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Orchestration Adaptative</h4>
+                <p>Détecte automatiquement les instruments présents dans votre matériel source et s'adapte.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Structure Épique</h4>
+                <p>Génère un arc dramatique complet avec 7 sections distinctes et des changements de dynamique.</p>
+            </div>
+        </div>
+
+        <h2>Installation</h2>
+        
+        <h3>1. Environnement Python</h3>
+        <p>Il est fortement recommandé d'utiliser un environnement virtuel pour isoler les dépendances de ce projet.</p>
+        <div class="code-block">
+# Créer un environnement virtuel<br>
+python3 -m venv venv<br><br>
+# L'activer (Linux / Mac)<br>
+source venv/bin/activate<br><br>
+# L'activer (Windows)<br>
+venv\Scripts\activate
+        </div>
+
+        <h3>2. Dépendances Python</h3>
+        <p>Une fois le venv activé, installez les paquets requis :</p>
+        <div class="code-block">
+pip install --upgrade pip<br>
+pip install basic-pitch music21 tensorflow numpy matplotlib onnxruntime
+        </div>
+        
+        <div class="alert">
+            <strong>Note pour Python 3.11+ :</strong> Si <code>basic-pitch</code> rencontre des difficultés, essayez :<br>
+            <code>pip install basic-pitch[tf] music21 numpy matplotlib</code>
+        </div>
+
+        <h3>3. FluidSynth (Rendu Audio)</h3>
+        <p>Pour convertir les fichiers MIDI générés en WAV, installez FluidSynth :</p>
+        <div class="code-block">
+sudo apt update<br>
+sudo apt install fluidsynth fluid-soundfont-gm
+        </div>
+
+        <h2>Utilisation</h2>
+        <ul class="instruction-list">
+            <li>Placez vos fichiers audio <code>.mp3</code> dans le dossier <code>solo/</code>.</li>
+            <li>Lancez le script principal : <code>python3 training.py</code></li>
+            <li>Le script génère un fichier MIDI multipiste dans <code>output/generated_epic_orchestra.mid</code>.</li>
+            <li>Un rendu audio WAV est automatiquement tenté vers <code>output/generated_epic_orchestra.wav</code>.</li>
+        </ul>
+
+        <div class="download-section">
+            <h2>Télécharger le projet</h2>
+            <p>Clonez le dépôt ou téléchargez l'archive complète pour commencer à générer votre musique.</p>
+            <a href="https://github.com/Lombard-Web-Services/AI-Music-Maker/archive/refs/heads/main.zip" class="btn-download">Télécharger l'archive ZIP</a>
+            <br><br>
+            <p style="font-size: 0.9rem; margin-top: 1rem;">Ou clonez via Git :<br>
+            <code style="color: var(--gold);">git clone https://github.com/Lombard-Web-Services/AI-Music-Maker.git</code></p>
+        </div>
+
+        <footer>
+            <p>Copyright © 2026 <strong>Lombard Web Services</strong>. Tous droits réservés.</p>
+            <p><a href="https://github.com/Lombard-Web-Services/AI-Music-Maker">Voir le dépôt GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>
