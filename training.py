@@ -2,7 +2,7 @@
 # coding: utf-8
 
 """
-© 2026 Thibaut LOMBARD – Lombard Web Services. Tous droits réservés.
+Copyright © 2026 Thibaut LOMBARD - Lombard Web Services
 
 Génération d'une musique ÉPIQUE MULTIPISTE avec structure fine — VERSION AUTO-ADAPTATIVE.
 
