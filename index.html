@@ -411,11 +411,14 @@
         <!-- ========================= HERO ========================= -->
         <header class="hero">
             <div class="logo-text">AI-Music-Maker</div>
-            <div class="subtitle" data-lang="fr">by Lombard Web Services</div>
-            <div class="subtitle" data-lang="en">by Lombard Web Services</div>
+            <div class="subtitle">by Lombard Web Services</div>
+            
+            <!-- Tagline FR / EN -->
             <p class="tagline" data-lang="fr">Des solutions innovantes pour un avenir plus intelligent.</p>
             <p class="tagline" data-lang="en">Innovative solutions for a smarter future.</p>
-            <img src="image.png" alt="AI-Music-Maker" class="hero-image">
+            
+            <!-- HERO IMAGE (ID pour le switch JS) -->
+            <img id="hero-img" src="image.png" alt="AI-Music-Maker" class="hero-image">
         </header>
 
         <!-- ========================= INTRO ========================= -->
@@ -537,18 +540,20 @@ cd AI-Music-Maker</div>
         </footer>
     </div>
 
-    <!-- ========================= LANGUAGE LOGIC ========================= -->
+    <!-- ========================= LANGUAGE & IMAGE LOGIC ========================= -->
     <script>
         (function() {
             const buttons = document.querySelectorAll('.lang-btn');
             const elements = document.querySelectorAll('[data-lang]');
+            const heroImg = document.getElementById('hero-img');
 
             function setLang(lang) {
                 // Update buttons
                 buttons.forEach(b => {
                     b.classList.toggle('active', b.dataset.setLang === lang);
                 });
-                // Update visible elements
+                
+                // Update visible text elements
                 elements.forEach(el => {
                     if (el.dataset.lang === lang) {
                         el.classList.add('visible');
@@ -556,6 +561,16 @@ cd AI-Music-Maker</div>
                         el.classList.remove('visible');
                     }
                 });
+
+                // Update hero image based on language
+                if (lang === 'en') {
+                    heroImg.src = 'image_en.png';
+                    heroImg.alt = 'AI-Music-Maker (English)';
+                } else {
+                    heroImg.src = 'image.png';
+                    heroImg.alt = 'AI-Music-Maker (Français)';
+                }
+
                 // Update <html lang="">
                 document.documentElement.lang = lang;
             }
