@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Music-Maker | Lombard Web Services</title>
+    
+    <!-- Google Fonts : Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         /* ------------------------------------------------------------
            VARIABLES & RESET
@@ -21,15 +27,16 @@
             --text-main: #e0d8c8;
             --text-muted: #a39682;
             --border-color: #3a2c1c;
-            --transition: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --transition: 0.4s var(--ease);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             line-height: 1.7;
@@ -38,45 +45,98 @@
         }
 
         /* ------------------------------------------------------------
-           LANGUAGE TOGGLE
+           TOP NAVIGATION & SLIDER
         ------------------------------------------------------------ */
-        .lang-switch {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem;
-            z-index: 100;
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 7, 5, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
             display: flex;
             gap: 0.5rem;
-            background: var(--bg-panel);
-            padding: 0.3rem;
-            border-radius: 30px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            list-style: none;
+            position: relative;
         }
 
-        .lang-btn {
-            background: none;
-            border: none;
+        .nav-link {
+            display: block;
+            padding: 0.6rem 1rem;
             color: var(--text-muted);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
             font-size: 0.85rem;
-            transition: all 0.3s var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color var(--transition);
+            position: relative;
+            z-index: 2;
+            border-radius: 20px;
         }
 
-        .lang-btn.active {
-            background: linear-gradient(180deg, var(--gold-dark), var(--gold));
-            color: var(--bg-dark);
+        .nav-link:hover, .nav-link.active {
+            color: var(--gold-light);
         }
 
-        .lang-btn:hover:not(.active) {
-            color: var(--green);
+        .nav-slider {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--green));
+            border-radius: 2px;
+            transition: left 0.4s var(--ease), width 0.4s var(--ease), opacity 0.4s var(--ease);
+            opacity: 0;
+            z-index: 1;
         }
 
         /* ------------------------------------------------------------
-           LAYOUT
+           LANG SWITCH
+        ------------------------------------------------------------ */
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lang-btn {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.4rem 0.6rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            line-height: 1;
+        }
+
+        .lang-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--gold);
+        }
+
+        .lang-btn.active {
+            border-color: var(--green);
+            background: var(--green-glow);
+            box-shadow: 0 0 10px var(--green-glow);
+        }
+
+        /* ------------------------------------------------------------
+           LAYOUT & SECTIONS
         ------------------------------------------------------------ */
         .container {
             max-width: 1000px;
@@ -86,7 +146,8 @@
 
         section {
             margin-bottom: 4rem;
-            scroll-margin-top: 5rem;
+            padding-top: 2rem;
+            scroll-margin-top: 80px;
         }
 
         /* ------------------------------------------------------------
@@ -94,9 +155,8 @@
         ------------------------------------------------------------ */
         .hero {
             text-align: center;
-            padding: 6rem 1rem 4rem;
+            padding: 4rem 1rem 3rem;
             border-bottom: 1px solid var(--border-color);
-            position: relative;
         }
 
         .hero .logo-text {
@@ -116,6 +176,7 @@
             color: var(--gold);
             font-style: italic;
             margin-bottom: 0.5rem;
+            font-weight: 400;
         }
 
         .hero .tagline {
@@ -132,7 +193,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px var(--green-glow);
             margin: 0 auto;
             display: block;
-            transition: transform 0.6s var(--transition), box-shadow 0.6s var(--transition);
+            transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
         }
 
         .hero-image:hover {
@@ -141,11 +202,12 @@
         }
 
         /* ------------------------------------------------------------
-           SECTIONS & TITLES
+           TITLES
         ------------------------------------------------------------ */
         h2 {
             color: var(--gold);
             font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
             margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
@@ -164,6 +226,7 @@
         h3 {
             color: var(--green);
             font-size: 1.2rem;
+            font-weight: 600;
             margin: 2rem 0 0.8rem;
             display: flex;
             align-items: center;
@@ -177,10 +240,7 @@
             line-height: 1;
         }
 
-        p {
-            margin-bottom: 1rem;
-            color: var(--text-main);
-        }
+        p { margin-bottom: 1rem; color: var(--text-main); font-weight: 400; }
 
         /* ------------------------------------------------------------
            FEATURES
@@ -196,7 +256,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 1.8rem;
-            transition: transform 0.4s var(--transition), box-shadow 0.4s var(--transition), border-color 0.4s var(--transition);
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
             position: relative;
             overflow: hidden;
         }
@@ -209,7 +269,7 @@
             background: linear-gradient(90deg, var(--gold), var(--green));
             transform: scaleX(0);
             transform-origin: left;
-            transition: transform 0.4s var(--transition);
+            transition: transform var(--transition);
         }
 
         .feature-card:hover {
@@ -218,14 +278,13 @@
             border-color: var(--green-dark);
         }
 
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
+        .feature-card:hover::before { transform: scaleX(1); }
 
         .feature-card h4 {
             color: var(--gold-light);
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
+            font-weight: 700;
         }
 
         /* ------------------------------------------------------------
@@ -243,12 +302,10 @@
             color: var(--gold-light);
             font-size: 0.9rem;
             white-space: pre;
-            transition: box-shadow 0.3s var(--transition);
+            transition: box-shadow var(--transition);
         }
 
-        .code-block:hover {
-            box-shadow: 0 0 15px var(--green-glow);
-        }
+        .code-block:hover { box-shadow: 0 0 15px var(--green-glow); }
 
         code {
             font-family: 'Fira Code', 'Courier New', monospace;
@@ -260,7 +317,7 @@
         }
 
         /* ------------------------------------------------------------
-           ALERT
+           ALERT & LIST
         ------------------------------------------------------------ */
         .alert {
             background: linear-gradient(90deg, rgba(46, 204, 113, 0.08), transparent);
@@ -273,13 +330,7 @@
 
         .alert strong { color: var(--green); }
 
-        /* ------------------------------------------------------------
-           LIST
-        ------------------------------------------------------------ */
-        .instruction-list {
-            list-style: none;
-            padding-left: 0;
-        }
+        .instruction-list { list-style: none; padding-left: 0; }
 
         .instruction-list li {
             margin-bottom: 0.8rem;
@@ -317,21 +368,10 @@
             pointer-events: none;
         }
 
-        .download-section h2 {
-            position: relative;
-            display: inline-block;
-        }
+        .download-section h2 { position: relative; display: inline-block; }
+        .download-section p { position: relative; }
 
-        .download-section p {
-            position: relative;
-        }
-
-        .clone-block {
-            position: relative;
-            max-width: 700px;
-            margin: 1.5rem auto 0;
-            text-align: left;
-        }
+        .clone-block { position: relative; max-width: 700px; margin: 1.5rem auto 0; text-align: left; }
 
         .btn-github {
             display: inline-flex;
@@ -344,7 +384,7 @@
             border-radius: 30px;
             text-decoration: none;
             font-size: 1rem;
-            transition: all 0.35s var(--transition);
+            transition: all 0.35s var(--ease);
             box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
             border: 1px solid rgba(255,255,255,0.1);
             margin-top: 1.5rem;
@@ -358,26 +398,44 @@
         }
 
         /* ------------------------------------------------------------
-           FOOTER
+           FOOTER & LICENSE
         ------------------------------------------------------------ */
         footer {
             text-align: center;
-            padding: 2rem 0;
+            padding: 3rem 0 2rem;
             margin-top: 3rem;
             border-top: 1px solid var(--border-color);
             color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        footer a {
-            color: var(--gold);
+        .license-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-panel);
+            font-size: 0.85rem;
+            color: var(--gold-light);
             text-decoration: none;
-            transition: color 0.3s var(--transition);
+            transition: border-color var(--transition), color var(--transition);
         }
 
-        footer a:hover {
-            color: var(--green);
+        .license-badge:hover {
+            border-color: var(--gold);
+            color: var(--gold);
         }
+
+        .license-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        footer a { color: var(--gold); text-decoration: none; transition: color var(--transition); }
+        footer a:hover { color: var(--green); }
 
         /* ------------------------------------------------------------
            LANGUAGE SWITCH (visibility)
@@ -389,11 +447,23 @@
         /* ------------------------------------------------------------
            RESPONSIVE
         ------------------------------------------------------------ */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            .nav-menu {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .nav-link { font-size: 0.75rem; padding: 0.5rem 0.8rem; }
+            .nav-slider { display: none; } /* Désactivé sur mobile, trop petit */
             .container { padding: 1rem; }
-            .hero { padding: 4rem 0.5rem 2rem; }
-            .lang-switch { top: 0.8rem; right: 0.8rem; }
-            .lang-btn { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+            .hero { padding: 3rem 0.5rem 2rem; }
             .download-section { padding: 2rem 1rem; }
             h2::after { width: 60%; }
         }
@@ -401,11 +471,24 @@
 </head>
 <body>
 
-    <!-- LANGUAGE TOGGLE -->
-    <div class="lang-switch">
-        <button class="lang-btn active" data-set-lang="fr">FR</button>
-        <button class="lang-btn" data-set-lang="en">EN</button>
-    </div>
+    <!-- ========================= TOP NAVIGATION ========================= -->
+    <nav class="top-nav">
+        <div class="nav-brand">AI-Music-Maker</div>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#intro" class="nav-link active" data-section="intro">Intro</a></li>
+            <li><a href="#features" class="nav-link" data-section="features" data-lang="fr">Fonctionnalités</a><a href="#features" class="nav-link" data-lang="en">Features</a></li>
+            <li><a href="#install" class="nav-link" data-section="install" data-lang="fr">Installation</a><a href="#install" class="nav-link" data-lang="en">Installation</a></li>
+            <li><a href="#usage" class="nav-link" data-section="usage" data-lang="fr">Utilisation</a><a href="#usage" class="nav-link" data-lang="en">Usage</a></li>
+            <li><a href="#clone" class="nav-link" data-section="clone" data-lang="fr">Installer</a><a href="#clone" class="nav-link" data-lang="en">Install</a></li>
+            <div class="nav-slider" id="navSlider"></div>
+        </ul>
+
+        <div class="lang-switch">
+            <button class="lang-btn active" data-set-lang="fr" aria-label="Français">🇫🇷</button>
+            <button class="lang-btn" data-set-lang="en" aria-label="English">🇬🇧</button>
+        </div>
+    </nav>
 
     <div class="container">
         <!-- ========================= HERO ========================= -->
@@ -413,22 +496,20 @@
             <div class="logo-text">AI-Music-Maker</div>
             <div class="subtitle">by Lombard Web Services</div>
             
-            <!-- Tagline FR / EN -->
             <p class="tagline" data-lang="fr">Des solutions innovantes pour un avenir plus intelligent.</p>
             <p class="tagline" data-lang="en">Innovative solutions for a smarter future.</p>
             
-            <!-- HERO IMAGE (ID pour le switch JS) -->
             <img id="hero-img" src="image.png" alt="AI-Music-Maker" class="hero-image">
         </header>
 
         <!-- ========================= INTRO ========================= -->
-        <section>
+        <section id="intro">
             <p data-lang="fr">AI-Music-Maker est un moteur de génération musicale basé sur l'intelligence artificielle. Il utilise un modèle LSTM (Long Short-Term Memory) pour composer des morceaux orchestraux épiques à partir de vos propres fichiers audio (MP3) ou fichiers MIDI. Le système analyse les notes, apprend le style musical, puis génère une partition multipiste avec une structure dramatique avancée et une orchestration adaptative.</p>
             <p data-lang="en">AI-Music-Maker is an AI-powered music generation engine. It uses an LSTM (Long Short-Term Memory) model to compose epic orchestral tracks from your own audio files (MP3) or MIDI files. The system analyzes notes, learns the musical style, and then generates a multi-track score with an advanced dramatic structure and adaptive orchestration.</p>
         </section>
 
         <!-- ========================= FEATURES ========================= -->
-        <section>
+        <section id="features">
             <h2 data-lang="fr">Fonctionnalités</h2>
             <h2 data-lang="en">Features</h2>
             <div class="features-grid">
@@ -460,7 +541,7 @@
         </section>
 
         <!-- ========================= INSTALLATION ========================= -->
-        <section>
+        <section id="install">
             <h2 data-lang="fr">Installation</h2>
             <h2 data-lang="en">Installation</h2>
 
@@ -500,7 +581,7 @@ sudo apt install fluidsynth fluid-soundfont-gm</div>
         </section>
 
         <!-- ========================= USAGE ========================= -->
-        <section>
+        <section id="usage">
             <h2 data-lang="fr">Utilisation</h2>
             <h2 data-lang="en">Usage</h2>
             <ul class="instruction-list">
@@ -515,8 +596,8 @@ sudo apt install fluidsynth fluid-soundfont-gm</div>
             </ul>
         </section>
 
-        <!-- ========================= INSTALL / CLONE ========================= -->
-        <section class="download-section">
+        <!-- ========================= CLONE ========================= -->
+        <section id="clone" class="download-section">
             <h2 data-lang="fr">Installer le projet</h2>
             <h2 data-lang="en">Install the Project</h2>
             <p data-lang="fr">Clonez le dépôt pour commencer à générer votre musique.</p>
@@ -536,24 +617,87 @@ cd AI-Music-Maker</div>
         <footer>
             <p data-lang="fr">Copyright © 2026 <strong>Lombard Web Services</strong>. Tous droits réservés.</p>
             <p data-lang="en">Copyright © 2026 <strong>Lombard Web Services</strong>. All rights reserved.</p>
-            <p><a href="https://github.com/Lombard-Web-Services/AI-Music-Maker">github.com/Lombard-Web-Services/AI-Music-Maker</a></p>
+            
+            <a href="https://creativecommons.org/licenses/by/4.0/" class="license-badge" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                    <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                </svg>
+                <span data-lang="fr">Licence CC BY 4.0</span>
+                <span data-lang="en">CC BY 4.0 License</span>
+            </a>
+            
+            <p style="margin-top: 1rem;">
+                <a href="https://github.com/Lombard-Web-Services/AI-Music-Maker">github.com/Lombard-Web-Services/AI-Music-Maker</a>
+            </p>
         </footer>
     </div>
 
-    <!-- ========================= LANGUAGE & IMAGE LOGIC ========================= -->
+    <!-- ========================= SCRIPTS ========================= -->
     <script>
         (function() {
+            const navMenu = document.getElementById('navMenu');
+            const navSlider = document.getElementById('navSlider');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
             const buttons = document.querySelectorAll('.lang-btn');
             const elements = document.querySelectorAll('[data-lang]');
             const heroImg = document.getElementById('hero-img');
 
+            // --- 1. Navigation Slider ---
+            function moveSlider(link) {
+                if (window.innerWidth <= 768) return; // Désactivé sur mobile
+                const rect = link.getBoundingClientRect();
+                const menuRect = navMenu.getBoundingClientRect();
+                navSlider.style.left = (rect.left - menuRect.left) + 'px';
+                navSlider.style.width = rect.width + 'px';
+                navSlider.style.opacity = '1';
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    moveSlider(link);
+                });
+            });
+
+            // Scroll spy pour mettre à jour la classe active et le slider
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        // Mettre à jour la classe active
+                        navLinks.forEach(l => {
+                            if (l.dataset.section === id) {
+                                l.classList.add('active');
+                                // Ne bouger le slider que si on n'est pas en train de cliquer
+                                if (navSlider.style.opacity === '0' || navSlider.style.opacity === '') {
+                                    // Fallback : déplacer le slider au chargement
+                                    setTimeout(() => moveSlider(l), 100);
+                                }
+                            } else {
+                                l.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            sections.forEach(s => observer.observe(s));
+
+            // Initialiser le slider sur le premier lien
+            setTimeout(() => {
+                const first = document.querySelector('.nav-link.active');
+                if (first) moveSlider(first);
+            }, 300);
+
+            // --- 2. Language & Image Switch ---
             function setLang(lang) {
-                // Update buttons
+                // Boutons actifs
                 buttons.forEach(b => {
                     b.classList.toggle('active', b.dataset.setLang === lang);
                 });
                 
-                // Update visible text elements
+                // Textes visibles
                 elements.forEach(el => {
                     if (el.dataset.lang === lang) {
                         el.classList.add('visible');
@@ -562,7 +706,7 @@ cd AI-Music-Maker</div>
                     }
                 });
 
-                // Update hero image based on language
+                // Image du hero
                 if (lang === 'en') {
                     heroImg.src = 'image_en.png';
                     heroImg.alt = 'AI-Music-Maker (English)';
@@ -571,16 +715,22 @@ cd AI-Music-Maker</div>
                     heroImg.alt = 'AI-Music-Maker (Français)';
                 }
 
-                // Update <html lang="">
+                // Attribut lang
                 document.documentElement.lang = lang;
+
+                // Réajuster le slider après le changement de texte (taille des liens peut varier)
+                setTimeout(() => {
+                    const activeLink = document.querySelector('.nav-link.active');
+                    if (activeLink) moveSlider(activeLink);
+                }, 50);
             }
 
-            // Event listeners
+            // Écouteurs sur les boutons de langue
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => setLang(btn.dataset.setLang));
             });
 
-            // Default language: FR
+            // Langue par défaut
             setLang('fr');
         })();
     </script>
