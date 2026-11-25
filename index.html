@@ -5,61 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Music-Maker | Lombard Web Services</title>
     <style>
+        /* ------------------------------------------------------------
+           VARIABLES & RESET
+        ------------------------------------------------------------ */
         :root {
             --bg-dark: #0a0705;
             --bg-panel: #14100c;
+            --bg-panel-light: #1e1812;
             --gold: #d4af37;
             --gold-light: #f3e5ab;
             --gold-dark: #997a00;
+            --green: #2ecc71;
+            --green-dark: #1e8449;
+            --green-glow: rgba(46, 204, 113, 0.15);
             --text-main: #e0d8c8;
             --text-muted: #a39682;
             --border-color: #3a2c1c;
+            --transition: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.7;
             background-image: radial-gradient(circle at 50% 0%, #1f1810 0%, var(--bg-dark) 70%);
             min-height: 100vh;
         }
 
+        /* ------------------------------------------------------------
+           LANGUAGE TOGGLE
+        ------------------------------------------------------------ */
+        .lang-switch {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-panel);
+            padding: 0.3rem;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s var(--transition);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(180deg, var(--gold-dark), var(--gold));
+            color: var(--bg-dark);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--green);
+        }
+
+        /* ------------------------------------------------------------
+           LAYOUT
+        ------------------------------------------------------------ */
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 2rem;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 5rem;
         }
 
-        .logo-text {
-            font-size: 2.5rem;
+        /* ------------------------------------------------------------
+           HERO
+        ------------------------------------------------------------ */
+        .hero {
+            text-align: center;
+            padding: 6rem 1rem 4rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .hero .logo-text {
+            font-size: clamp(2rem, 6vw, 3.5rem);
             font-weight: 800;
             letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-dark));
+            background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
             text-transform: uppercase;
         }
 
-        .subtitle {
-            font-size: 1.2rem;
+        .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             color: var(--gold);
             font-style: italic;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .tagline {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 1rem;
         }
 
         .hero-image {
@@ -67,23 +129,52 @@
             max-width: 800px;
             border-radius: 12px;
             border: 1px solid var(--gold-dark);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px var(--green-glow);
             margin: 0 auto;
             display: block;
+            transition: transform 0.6s var(--transition), box-shadow 0.6s var(--transition);
         }
 
+        .hero-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9), 0 0 40px rgba(46, 204, 113, 0.25);
+        }
+
+        /* ------------------------------------------------------------
+           SECTIONS & TITLES
+        ------------------------------------------------------------ */
         h2 {
             color: var(--gold);
-            font-size: 1.8rem;
-            margin: 2rem 0 1rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 40%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--green), transparent);
+            margin-top: 0.5rem;
+            border-radius: 2px;
         }
 
         h3 {
-            color: var(--gold-light);
-            font-size: 1.3rem;
-            margin: 1.5rem 0 0.5rem;
+            color: var(--green);
+            font-size: 1.2rem;
+            margin: 2rem 0 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3::before {
+            content: '›';
+            color: var(--gold);
+            font-size: 1.5rem;
+            line-height: 1;
         }
 
         p {
@@ -91,78 +182,184 @@
             color: var(--text-main);
         }
 
+        /* ------------------------------------------------------------
+           FEATURES
+        ------------------------------------------------------------ */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.5rem;
-            margin-top: 1.5rem;
         }
 
         .feature-card {
             background-color: var(--bg-panel);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: transform 0.4s var(--transition), box-shadow 0.4s var(--transition), border-color 0.4s var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--green));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s var(--transition);
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
-            border-color: var(--gold-dark);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 20px var(--green-glow);
+            border-color: var(--green-dark);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
         }
 
         .feature-card h4 {
-            color: var(--gold);
+            color: var(--gold-light);
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
         }
 
+        /* ------------------------------------------------------------
+           CODE BLOCKS
+        ------------------------------------------------------------ */
         .code-block {
             background-color: #050403;
             border: 1px solid var(--border-color);
+            border-left: 4px solid var(--green);
             border-radius: 6px;
-            padding: 1rem;
+            padding: 1rem 1.2rem;
             margin: 1rem 0;
             overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Fira Code', 'Courier New', monospace;
             color: var(--gold-light);
             font-size: 0.9rem;
+            white-space: pre;
+            transition: box-shadow 0.3s var(--transition);
         }
 
-        .btn-download {
-            display: inline-block;
-            background: linear-gradient(180deg, var(--gold-dark), var(--gold));
-            color: var(--bg-dark);
+        .code-block:hover {
+            box-shadow: 0 0 15px var(--green-glow);
+        }
+
+        code {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            color: var(--gold-light);
+            font-size: 0.88em;
+        }
+
+        /* ------------------------------------------------------------
+           ALERT
+        ------------------------------------------------------------ */
+        .alert {
+            background: linear-gradient(90deg, rgba(46, 204, 113, 0.08), transparent);
+            border-left: 4px solid var(--green);
+            padding: 1rem 1.2rem;
+            margin: 1.2rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .alert strong { color: var(--green); }
+
+        /* ------------------------------------------------------------
+           LIST
+        ------------------------------------------------------------ */
+        .instruction-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instruction-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+
+        .instruction-list li::before {
+            content: '✓';
+            color: var(--green);
+            position: absolute;
+            left: 0;
             font-weight: bold;
-            padding: 1rem 2.5rem;
-            border-radius: 30px;
-            text-decoration: none;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-            border: 1px solid var(--gold-light);
-            margin: 2rem 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .btn-download:hover {
-            background: linear-gradient(180deg, var(--gold), var(--gold-light));
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
-            transform: translateY(-2px);
-            color: #000;
-        }
-
+        /* ------------------------------------------------------------
+           DOWNLOAD / INSTALL
+        ------------------------------------------------------------ */
         .download-section {
             text-align: center;
-            background-color: var(--bg-panel);
+            background: linear-gradient(180deg, var(--bg-panel), var(--bg-panel-light));
             border: 1px solid var(--gold-dark);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 3rem 2rem;
-            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
         }
 
+        .download-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, var(--green-glow), transparent 60%);
+            pointer-events: none;
+        }
+
+        .download-section h2 {
+            position: relative;
+            display: inline-block;
+        }
+
+        .download-section p {
+            position: relative;
+        }
+
+        .clone-block {
+            position: relative;
+            max-width: 700px;
+            margin: 1.5rem auto 0;
+            text-align: left;
+        }
+
+        .btn-github {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(180deg, var(--green-dark), var(--green));
+            color: #031a0c;
+            font-weight: 700;
+            padding: 0.9rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.35s var(--transition);
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 1.5rem;
+            position: relative;
+        }
+
+        .btn-github:hover {
+            background: linear-gradient(180deg, var(--green), #58e893);
+            box-shadow: 0 6px 25px rgba(46, 204, 113, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* ------------------------------------------------------------
+           FOOTER
+        ------------------------------------------------------------ */
         footer {
             text-align: center;
             padding: 2rem 0;
@@ -175,126 +372,202 @@
         footer a {
             color: var(--gold);
             text-decoration: none;
+            transition: color 0.3s var(--transition);
         }
 
         footer a:hover {
-            text-decoration: underline;
+            color: var(--green);
         }
 
-        .instruction-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
+        /* ------------------------------------------------------------
+           LANGUAGE SWITCH (visibility)
+        ------------------------------------------------------------ */
+        [data-lang] { display: none; }
+        [data-lang].visible { display: block; }
+        span[data-lang].visible { display: inline; }
 
-        .instruction-list li {
-            margin-bottom: 0.8rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .instruction-list li::before {
-            content: "•";
-            color: var(--gold);
-            position: absolute;
-            left: 0;
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .alert {
-            background-color: rgba(212, 175, 55, 0.1);
-            border-left: 4px solid var(--gold);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0 4px 4px 0;
+        /* ------------------------------------------------------------
+           RESPONSIVE
+        ------------------------------------------------------------ */
+        @media (max-width: 640px) {
+            .container { padding: 1rem; }
+            .hero { padding: 4rem 0.5rem 2rem; }
+            .lang-switch { top: 0.8rem; right: 0.8rem; }
+            .lang-btn { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+            .download-section { padding: 2rem 1rem; }
+            h2::after { width: 60%; }
         }
     </style>
 </head>
 <body>
+
+    <!-- LANGUAGE TOGGLE -->
+    <div class="lang-switch">
+        <button class="lang-btn active" data-set-lang="fr">FR</button>
+        <button class="lang-btn" data-set-lang="en">EN</button>
+    </div>
+
     <div class="container">
-        <header>
+        <!-- ========================= HERO ========================= -->
+        <header class="hero">
             <div class="logo-text">AI-Music-Maker</div>
-            <div class="subtitle">by Lombard Web Services</div>
+            <div class="subtitle" data-lang="fr">by Lombard Web Services</div>
+            <div class="subtitle" data-lang="en">by Lombard Web Services</div>
+            <p class="tagline" data-lang="fr">Des solutions innovantes pour un avenir plus intelligent.</p>
+            <p class="tagline" data-lang="en">Innovative solutions for a smarter future.</p>
             <img src="image.png" alt="AI-Music-Maker" class="hero-image">
         </header>
 
+        <!-- ========================= INTRO ========================= -->
         <section>
-            <p>AI-Music-Maker est un moteur de génération musicale basé sur l'intelligence artificielle. Il utilise un modèle LSTM (Long Short-Term Memory) pour composer des morceaux orchestraux épiques à partir de vos propres fichiers audio (MP3) ou fichiers MIDI. Le système analyse les notes, apprend le style musical, puis génère une partition multipiste avec une structure dramatique avancée et une orchestration adaptative.</p>
+            <p data-lang="fr">AI-Music-Maker est un moteur de génération musicale basé sur l'intelligence artificielle. Il utilise un modèle LSTM (Long Short-Term Memory) pour composer des morceaux orchestraux épiques à partir de vos propres fichiers audio (MP3) ou fichiers MIDI. Le système analyse les notes, apprend le style musical, puis génère une partition multipiste avec une structure dramatique avancée et une orchestration adaptative.</p>
+            <p data-lang="en">AI-Music-Maker is an AI-powered music generation engine. It uses an LSTM (Long Short-Term Memory) model to compose epic orchestral tracks from your own audio files (MP3) or MIDI files. The system analyzes notes, learns the musical style, and then generates a multi-track score with an advanced dramatic structure and adaptive orchestration.</p>
         </section>
 
-        <h2>Fonctionnalités</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <h4>Transcription Audio vers MIDI</h4>
-                <p>Utilise Basic Pitch de Spotify pour extraire les notes de vos fichiers MP3.</p>
+        <!-- ========================= FEATURES ========================= -->
+        <section>
+            <h2 data-lang="fr">Fonctionnalités</h2>
+            <h2 data-lang="en">Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4 data-lang="fr">Transcription Audio vers MIDI</h4>
+                    <h4 data-lang="en">Audio to MIDI Transcription</h4>
+                    <p data-lang="fr">Utilise Basic Pitch de Spotify pour extraire les notes de vos fichiers MP3.</p>
+                    <p data-lang="en">Uses Spotify's Basic Pitch to extract notes from your MP3 files.</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-lang="fr">Génération Multi-Pistes</h4>
+                    <h4 data-lang="en">Multi-Track Generation</h4>
+                    <p data-lang="fr">Crée des partitions pour plusieurs instruments simultanément.</p>
+                    <p data-lang="en">Creates scores for multiple instruments simultaneously.</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-lang="fr">Orchestration Adaptative</h4>
+                    <h4 data-lang="en">Adaptive Orchestration</h4>
+                    <p data-lang="fr">Détecte automatiquement les instruments présents dans votre matériel source et s'adapte.</p>
+                    <p data-lang="en">Automatically detects instruments present in your source material and adapts.</p>
+                </div>
+                <div class="feature-card">
+                    <h4 data-lang="fr">Structure Épique</h4>
+                    <h4 data-lang="en">Epic Structure</h4>
+                    <p data-lang="fr">Génère un arc dramatique complet avec 7 sections distinctes et des changements de dynamique.</p>
+                    <p data-lang="en">Generates a complete dramatic arc with 7 distinct sections and dynamic changes.</p>
+                </div>
             </div>
-            <div class="feature-card">
-                <h4>Génération Multi-Pistes</h4>
-                <p>Crée des partitions pour plusieurs instruments simultanément.</p>
+        </section>
+
+        <!-- ========================= INSTALLATION ========================= -->
+        <section>
+            <h2 data-lang="fr">Installation</h2>
+            <h2 data-lang="en">Installation</h2>
+
+            <h3 data-lang="fr">1. Environnement Python</h3>
+            <h3 data-lang="en">1. Python Environment</h3>
+            <p data-lang="fr">Il est fortement recommandé d'utiliser un environnement virtuel pour isoler les dépendances de ce projet.</p>
+            <p data-lang="en">It is strongly recommended to use a virtual environment to isolate this project's dependencies.</p>
+            <div class="code-block"># Créer un environnement virtuel / Create a virtual environment
+python3 -m venv venv
+
+# L'activer (Linux / Mac) / Activate it (Linux / Mac)
+source venv/bin/activate
+
+# L'activer (Windows) / Activate it (Windows)
+venv\Scripts\activate</div>
+
+            <h3 data-lang="fr">2. Dépendances Python</h3>
+            <h3 data-lang="en">2. Python Dependencies</h3>
+            <p data-lang="fr">Une fois le venv activé, installez les paquets requis :</p>
+            <p data-lang="en">Once the venv is activated, install the required packages:</p>
+            <div class="code-block">pip install --upgrade pip
+pip install basic-pitch music21 tensorflow numpy matplotlib onnxruntime</div>
+            <div class="alert">
+                <strong data-lang="fr">Note Python 3.11+ :</strong>
+                <strong data-lang="en">Python 3.11+ Note:</strong>
+                <span data-lang="fr">Si <code>basic-pitch</code> échoue, essayez :</span>
+                <span data-lang="en">If <code>basic-pitch</code> fails, try:</span>
+                <code>pip install basic-pitch[tf] music21 numpy matplotlib</code>
             </div>
-            <div class="feature-card">
-                <h4>Orchestration Adaptative</h4>
-                <p>Détecte automatiquement les instruments présents dans votre matériel source et s'adapte.</p>
+
+            <h3 data-lang="fr">3. FluidSynth (Rendu Audio)</h3>
+            <h3 data-lang="en">3. FluidSynth (Audio Rendering)</h3>
+            <p data-lang="fr">Pour convertir les fichiers MIDI générés en WAV, installez FluidSynth :</p>
+            <p data-lang="en">To convert generated MIDI files to WAV, install FluidSynth:</p>
+            <div class="code-block">sudo apt update
+sudo apt install fluidsynth fluid-soundfont-gm</div>
+        </section>
+
+        <!-- ========================= USAGE ========================= -->
+        <section>
+            <h2 data-lang="fr">Utilisation</h2>
+            <h2 data-lang="en">Usage</h2>
+            <ul class="instruction-list">
+                <li data-lang="fr">Placez vos fichiers audio <code>.mp3</code> dans le dossier <code>solo/</code>.</li>
+                <li data-lang="en">Place your audio <code>.mp3</code> files in the <code>solo/</code> folder.</li>
+                <li data-lang="fr">Lancez le script principal : <code>python3 training.py</code></li>
+                <li data-lang="en">Run the main script: <code>python3 training.py</code></li>
+                <li data-lang="fr">Le script génère un fichier MIDI multipiste dans <code>output/generated_epic_orchestra.mid</code>.</li>
+                <li data-lang="en">The script generates a multi-track MIDI file at <code>output/generated_epic_orchestra.mid</code>.</li>
+                <li data-lang="fr">Un rendu audio WAV est automatiquement tenté vers <code>output/generated_epic_orchestra.wav</code>.</li>
+                <li data-lang="en">A WAV audio render is automatically attempted to <code>output/generated_epic_orchestra.wav</code>.</li>
+            </ul>
+        </section>
+
+        <!-- ========================= INSTALL / CLONE ========================= -->
+        <section class="download-section">
+            <h2 data-lang="fr">Installer le projet</h2>
+            <h2 data-lang="en">Install the Project</h2>
+            <p data-lang="fr">Clonez le dépôt pour commencer à générer votre musique.</p>
+            <p data-lang="en">Clone the repository to start generating your music.</p>
+            <div class="clone-block">
+                <div class="code-block">git clone https://github.com/Lombard-Web-Services/AI-Music-Maker.git
+cd AI-Music-Maker</div>
             </div>
-            <div class="feature-card">
-                <h4>Structure Épique</h4>
-                <p>Génère un arc dramatique complet avec 7 sections distinctes et des changements de dynamique.</p>
-            </div>
-        </div>
+            <a href="https://github.com/Lombard-Web-Services/AI-Music-Maker" class="btn-github">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                <span data-lang="fr">Voir sur GitHub</span>
+                <span data-lang="en">View on GitHub</span>
+            </a>
+        </section>
 
-        <h2>Installation</h2>
-        
-        <h3>1. Environnement Python</h3>
-        <p>Il est fortement recommandé d'utiliser un environnement virtuel pour isoler les dépendances de ce projet.</p>
-        <div class="code-block">
-# Créer un environnement virtuel<br>
-python3 -m venv venv<br><br>
-# L'activer (Linux / Mac)<br>
-source venv/bin/activate<br><br>
-# L'activer (Windows)<br>
-venv\Scripts\activate
-        </div>
-
-        <h3>2. Dépendances Python</h3>
-        <p>Une fois le venv activé, installez les paquets requis :</p>
-        <div class="code-block">
-pip install --upgrade pip<br>
-pip install basic-pitch music21 tensorflow numpy matplotlib onnxruntime
-        </div>
-        
-        <div class="alert">
-            <strong>Note pour Python 3.11+ :</strong> Si <code>basic-pitch</code> rencontre des difficultés, essayez :<br>
-            <code>pip install basic-pitch[tf] music21 numpy matplotlib</code>
-        </div>
-
-        <h3>3. FluidSynth (Rendu Audio)</h3>
-        <p>Pour convertir les fichiers MIDI générés en WAV, installez FluidSynth :</p>
-        <div class="code-block">
-sudo apt update<br>
-sudo apt install fluidsynth fluid-soundfont-gm
-        </div>
-
-        <h2>Utilisation</h2>
-        <ul class="instruction-list">
-            <li>Placez vos fichiers audio <code>.mp3</code> dans le dossier <code>solo/</code>.</li>
-            <li>Lancez le script principal : <code>python3 training.py</code></li>
-            <li>Le script génère un fichier MIDI multipiste dans <code>output/generated_epic_orchestra.mid</code>.</li>
-            <li>Un rendu audio WAV est automatiquement tenté vers <code>output/generated_epic_orchestra.wav</code>.</li>
-        </ul>
-
-        <div class="download-section">
-            <h2>Télécharger le projet</h2>
-            <p>Clonez le dépôt ou téléchargez l'archive complète pour commencer à générer votre musique.</p>
-            <a href="https://github.com/Lombard-Web-Services/AI-Music-Maker/archive/refs/heads/main.zip" class="btn-download">Télécharger l'archive ZIP</a>
-            <br><br>
-            <p style="font-size: 0.9rem; margin-top: 1rem;">Ou clonez via Git :<br>
-            <code style="color: var(--gold);">git clone https://github.com/Lombard-Web-Services/AI-Music-Maker.git</code></p>
-        </div>
-
+        <!-- ========================= FOOTER ========================= -->
         <footer>
-            <p>Copyright © 2026 <strong>Lombard Web Services</strong>. Tous droits réservés.</p>
-            <p><a href="https://github.com/Lombard-Web-Services/AI-Music-Maker">Voir le dépôt GitHub</a></p>
+            <p data-lang="fr">Copyright © 2026 <strong>Lombard Web Services</strong>. Tous droits réservés.</p>
+            <p data-lang="en">Copyright © 2026 <strong>Lombard Web Services</strong>. All rights reserved.</p>
+            <p><a href="https://github.com/Lombard-Web-Services/AI-Music-Maker">github.com/Lombard-Web-Services/AI-Music-Maker</a></p>
         </footer>
     </div>
+
+    <!-- ========================= LANGUAGE LOGIC ========================= -->
+    <script>
+        (function() {
+            const buttons = document.querySelectorAll('.lang-btn');
+            const elements = document.querySelectorAll('[data-lang]');
+
+            function setLang(lang) {
+                // Update buttons
+                buttons.forEach(b => {
+                    b.classList.toggle('active', b.dataset.setLang === lang);
+                });
+                // Update visible elements
+                elements.forEach(el => {
+                    if (el.dataset.lang === lang) {
+                        el.classList.add('visible');
+                    } else {
+                        el.classList.remove('visible');
+                    }
+                });
+                // Update <html lang="">
+                document.documentElement.lang = lang;
+            }
+
+            // Event listeners
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => setLang(btn.dataset.setLang));
+            });
+
+            // Default language: FR
+            setLang('fr');
+        })();
+    </script>
 </body>
 </html>
