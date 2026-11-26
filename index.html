@@ -440,9 +440,11 @@
         /* ------------------------------------------------------------
            LANGUAGE SWITCH (visibility)
         ------------------------------------------------------------ */
-        [data-lang] { display: none; }
-        [data-lang].visible { display: block; }
-        span[data-lang].visible { display: inline; }
+		[data-lang] { display: none !important; }
+		[data-lang].visible { display: block !important; }
+		h2[data-lang].visible { display: inline-block !important; }
+		span[data-lang].visible,
+		strong[data-lang].visible { display: inline !important; }
 
         /* ------------------------------------------------------------
            RESPONSIVE
@@ -461,7 +463,7 @@
                 flex-wrap: wrap;
             }
             .nav-link { font-size: 0.75rem; padding: 0.5rem 0.8rem; }
-            .nav-slider { display: none; } /* Désactivé sur mobile, trop petit */
+            .nav-slider { display: none; }
             .container { padding: 1rem; }
             .hero { padding: 3rem 0.5rem 2rem; }
             .download-section { padding: 2rem 1rem; }
@@ -612,6 +614,7 @@ cd AI-Music-Maker</div>
                 <span data-lang="en">View on GitHub</span>
             </a>
         </section>
+
         <!-- ========================= FOOTER ========================= -->
         <footer>
             <p data-lang="fr">Copyright © 2026 <strong>Lombard Web Services</strong>. Tous droits réservés.</p>
@@ -645,7 +648,7 @@ cd AI-Music-Maker</div>
 
             // --- 1. Navigation Slider ---
             function moveSlider(link) {
-                if (window.innerWidth <= 768) return; // Désactivé sur mobile
+                if (window.innerWidth <= 768) return;
                 const rect = link.getBoundingClientRect();
                 const menuRect = navMenu.getBoundingClientRect();
                 navSlider.style.left = (rect.left - menuRect.left) + 'px';
@@ -664,13 +667,10 @@ cd AI-Music-Maker</div>
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const id = entry.target.id;
-                        // Mettre à jour la classe active
                         navLinks.forEach(l => {
                             if (l.dataset.section === id) {
                                 l.classList.add('active');
-                                // Ne bouger le slider que si on n'est pas en train de cliquer
                                 if (navSlider.style.opacity === '0' || navSlider.style.opacity === '') {
-                                    // Fallback : déplacer le slider au chargement
                                     setTimeout(() => moveSlider(l), 100);
                                 }
                             } else {
@@ -683,7 +683,6 @@ cd AI-Music-Maker</div>
 
             sections.forEach(s => observer.observe(s));
 
-            // Initialiser le slider sur le premier lien
             setTimeout(() => {
                 const first = document.querySelector('.nav-link.active');
                 if (first) moveSlider(first);
@@ -691,12 +690,10 @@ cd AI-Music-Maker</div>
 
             // --- 2. Language & Image Switch ---
             function setLang(lang) {
-                // Boutons actifs
                 buttons.forEach(b => {
                     b.classList.toggle('active', b.dataset.setLang === lang);
                 });
                 
-                // Textes visibles
                 elements.forEach(el => {
                     if (el.dataset.lang === lang) {
                         el.classList.add('visible');
@@ -705,7 +702,6 @@ cd AI-Music-Maker</div>
                     }
                 });
 
-                // Image du hero
                 if (lang === 'en') {
                     heroImg.src = 'image_en.png';
                     heroImg.alt = 'AI-Music-Maker (English)';
@@ -714,22 +710,18 @@ cd AI-Music-Maker</div>
                     heroImg.alt = 'AI-Music-Maker (Français)';
                 }
 
-                // Attribut lang
                 document.documentElement.lang = lang;
 
-                // Réajuster le slider après le changement de texte (taille des liens peut varier)
                 setTimeout(() => {
                     const activeLink = document.querySelector('.nav-link.active');
                     if (activeLink) moveSlider(activeLink);
                 }, 50);
             }
 
-            // Écouteurs sur les boutons de langue
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => setLang(btn.dataset.setLang));
             });
 
-            // Langue par défaut
             setLang('fr');
         })();
     </script>
